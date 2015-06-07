@@ -1,0 +1,7 @@
+ihpc <- read.table("household_power_consumption.txt", header = TRUE, sep = ";", nrows = 100 )
+classes <- sapply(ihpc, class)
+hpc <- read.table("household_power_consumption.txt", header = TRUE, sep = ";", na.strings = "?", colClasses = classes, nrows = 2075259)
+shpc <- subset( hpc, Date == "2/2/2007"|Date == "1/2/2007" )
+png(file="plot1")
+hist(shpc$Global_active_power, col = "red", xlab ="Global Active Power (kilowatts)", ylab= "Frequency", main = "Global Active Power")
+dev.off()
