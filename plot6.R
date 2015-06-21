@@ -8,5 +8,5 @@ emiperyear <- aggregate(mvNEI$Emissions, list(Year = mvNEI$year, Region = mvNEI$
 emiperyear <- transform(emiperyear, Region = factor(emiperyear$Region))
 levels(emiperyear$Region) <- c("Los Angeles","Baltimore")
 ggplot(emiperyear, aes(Year, x, color = Region)) +geom_line(aes(group = Region))+geom_point() + ggtitle("Total Emissions of Motor Vehicles in Baltimore and Los Angeles by Year") + xlab("year") +ylab("Total Emissions")
-dev.copy(png, file = "plot6")
+dev.copy(png, file = "plot6.png")
 dev.off()
