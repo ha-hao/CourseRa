@@ -1,0 +1,10 @@
+NEI <- readRDS("summarySCC_PM25.rds")
+NEI<- transform(NEI, year = factor(NEI$year))
+SCC <- readRDS("Source_Classification_Code.rds")
+motorV <- unique(SCC$EI.Sector)[c(49:52)]
+mvSCC <- subset(SCC, EI.Sector %in% motorV, SCC)
+mvNEI <- subset(NEI, fips == "24510" & NEI$SCC %in% mvSCC$SCC, c(Emissions, year))
+emiperyear <- aggregate(mvNEI$Emissions, list(Year = mvNEI$year), sum)
+ggplot(emiperyear, aes(Year, x)) +geom_line(aes(group = rep(1,4))) +geom_point() + ggtitle("Total Emissions of Motor Vehicles in Baltimore by Year") + xlab("year") +ylab("Total Emissions")
+dev.copy(png, file = "plot5")
+dev.off()

@@ -1,0 +1,12 @@
+NEI <- readRDS("summarySCC_PM25.rds")
+NEI<- transform(NEI, year = factor(NEI$year))
+SCC <- readRDS("Source_Classification_Code.rds")
+motorV <- unique(SCC$EI.Sector)[c(49:52)]
+mvSCC <- subset(SCC, EI.Sector %in% motorV, SCC)
+mvNEI <- subset(NEI, (fips =="24510"|fips == "06037") & NEI$SCC %in% mvSCC$SCC, c(Emissions, year, fips))
+emiperyear <- aggregate(mvNEI$Emissions, list(Year = mvNEI$year, Region = mvNEI$fips), sum)
+emiperyear <- transform(emiperyear, Region = factor(emiperyear$Region))
+levels(emiperyear$Region) <- c("Los Angeles","Baltimore")
+ggplot(emiperyear, aes(Year, x, color = Region)) +geom_line(aes(group = Region))+geom_point() + ggtitle("Total Emissions of Motor Vehicles in Baltimore and Los Angeles by Year") + xlab("year") +ylab("Total Emissions")
+dev.copy(png, file = "plot6")
+dev.off()
